@@ -1,0 +1,19 @@
+
+# Dependencies and local environment
+node_modules/
+.venv/
+venv/
+
+# Compiled executables and build files
+*.exe
+*.o
+*.obj
+
+# Local backup files
+*.backup
+*.bak
+*.old
+
+# Git and operating system files
+.DS_Store
+Thumbs.db

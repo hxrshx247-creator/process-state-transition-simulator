@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Process State Transition Simulator</title>
+  <meta name="description" content="An interactive Operating Systems simulator showing how a process moves between the New, Ready, Running, Waiting and Terminated states.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="masthead">
+      <h1>Process State Transition Simulator</h1>
+      <p class="lede">
+        Create processes and move them through the five states an operating system tracks:
+        New, Ready, Running, Waiting and Terminated. Every move is checked against the
+        real transition rules, and every attempt, valid or not, is written to the event log.
+      </p>
+    </header>
+
+    <main class="workspace">
+      <section class="panel panel--diagram" aria-labelledby="diagram-title">
+        <div class="panel-head">
+          <h2 id="diagram-title">State diagram</h2>
+          <p class="panel-note" id="diagram-note"></p>
+        </div>
+        <div class="diagram-scroll">
+          <svg id="state-diagram" viewBox="0 0 900 440" role="img" aria-label="Process state diagram"></svg>
+        </div>
+        <dl class="state-guide">
+          <div class="guide-item" data-state="New">
+            <dt><span class="dot"></span>New</dt>
+            <dd>The process is being created and is not yet competing for the CPU.</dd>
+          </div>
+          <div class="guide-item" data-state="Ready">
+            <dt><span class="dot"></span>Ready</dt>
+            <dd>Loaded in memory and waiting in the ready queue for the scheduler.</dd>
+          </div>
+          <div class="guide-item" data-state="Running">
+            <dt><span class="dot"></span>Running</dt>
+            <dd>Its instructions are executing on the CPU.</dd>
+          </div>
+          <div class="guide-item" data-state="Waiting">
+            <dt><span class="dot"></span>Waiting</dt>
+            <dd>Blocked until an I/O operation or event completes.</dd>
+          </div>
+          <div class="guide-item" data-state="Terminated">
+            <dt><span class="dot"></span>Terminated</dt>
+            <dd>Finished executing. The OS releases its resources.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <div class="column">
+        <section class="panel" aria-labelledby="controls-title">
+          <h2 id="controls-title">Controls</h2>
+
+          <div class="control-row">
+            <button id="create-btn" class="btn btn--primary" type="button">Create process</button>
+            <button id="reset-btn" class="btn btn--quiet" type="button">Reset simulation</button>
+          </div>
+
+          <div class="field">
+            <label for="process-select">Selected process</label>
+            <select id="process-select"></select>
+          </div>
+
+          <p id="next-moves" class="next-moves"></p>
+
+          <div id="action-grid" class="action-grid" role="group" aria-label="State transitions"></div>
+          <p class="hint">
+            Dimmed buttons are not valid for the selected process. You can still press one
+            to see why the operating system would reject it.
+          </p>
+
+          <p id="status" class="status" role="status" aria-live="polite"></p>
+
+          <label class="check">
+            <input type="checkbox" id="single-cpu">
+            <span>
+              <strong>Single CPU mode</strong>
+              <small>Only one process may be Running at a time, as on a one-core machine.</small>
+            </span>
+          </label>
+        </section>
+
+        <section class="panel" aria-labelledby="table-title">
+          <div class="panel-head panel-head--row">
+            <h2 id="table-title">Processes</h2>
+            <span class="count" id="process-count"></span>
+          </div>
+          <div class="table-wrap" id="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Process ID</th>
+                  <th scope="col">Current state</th>
+                  <th scope="col" class="num">Transitions</th>
+                </tr>
+              </thead>
+              <tbody id="process-rows"></tbody>
+            </table>
+          </div>
+          <div class="empty" id="table-empty">
+            <strong>No processes yet</strong>
+            <p>Press Create process. It will appear here in the New state.</p>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel panel--log" aria-labelledby="log-title">
+        <div class="panel-head panel-head--row">
+          <h2 id="log-title">Event log</h2>
+          <span class="count" id="event-count"></span>
+        </div>
+        <ol class="log-list" id="event-log" aria-label="Simulation events, newest first"></ol>
+        <div class="empty" id="log-empty">
+          <strong>Nothing has happened yet</strong>
+          <p>Creations, transitions, rejected attempts and resets are recorded here, newest first.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Keep the original JavaScript simulation for existing tests/fallback. -->
+  <script src="simulation.js"></script>
+
+  <!-- API helper that communicates with the C simulator through server.js. -->
+  <script src="c-api.js"></script>
+
+  <!-- Website interface. -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Compiled programs and objects
+*.exe
+*.o
+*.obj
+*.out
+simulator
+test_simulator
+
+# Editor / OS files
+.vscode/
+.DS_Store
+Thumbs.db

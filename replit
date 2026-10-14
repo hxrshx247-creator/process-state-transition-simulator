@@ -1,0 +1,11 @@
+entrypoint = "index.html"
+modules = ["nodejs-20"]
+run = "node server.js"
+
+[deployment]
+run = ["node", "server.js"]
+deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 3000
+externalPort = 80

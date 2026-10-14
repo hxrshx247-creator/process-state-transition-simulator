@@ -1,0 +1,11 @@
+{
+  "name": "process-state-transition-simulator",
+  "version": "1.0.0",
+  "description": "Interactive Operating Systems project: simulate and visualise process state transitions.",
+  "scripts": {
+    "build": "gcc -std=c11 -Wall -Wextra -Wpedantic -IProcess_State_Transition_Simulator/include Process_State_Transition_Simulator/src/process_simulator.c Process_State_Transition_Simulator/src/bridge.c -o Process_State_Transition_Simulator/bridge",
+    "start": "node server.js",
+    "test": "node simulation.test.js"
+  },
+  "license": "MIT"
+}
